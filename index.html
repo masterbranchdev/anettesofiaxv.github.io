@@ -363,7 +363,7 @@
 </head>
 <body>
 
-<audio id="bg-audio" loop>
+<audio id="bg-audio" loop preload="auto">
     <source src="src/bg.mp3" type="audio/mpeg">
 </audio>
 
@@ -524,16 +524,36 @@
         videoContainer.style.display = 'block';
         videoContainer.style.opacity = '1';
 
-        // Reproducir el video y el audio al mismo tiempo
+        // Preprecargar el audio antes de intentar reproducir
+        bgAudio.load();
+
+        // Reproducir el video y manejar errores del audio para móviles
         video.play();
-        bgAudio.play();
+
+        bgAudio.play().then(() => {
+            // ✅ Audio se reproduce (PC y algunos móviles)
+            console.log('Audio de fondo reproduciendo');
+        }).catch(error => {
+            // ❌ Audio bloqueado en móvil
+            console.log('Audio bloqueado en móvil:', error);
+
+            // Mostrar botón para activar audio
+            const audioBtn = document.createElement('button');
+            audioBtn.textContent = '🔊 Activar audio de fondo';
+            audioBtn.style.cssText = 'position:fixed;bottom:20px;right:20px;padding:12px 24px;background:#000;color:#fff;border:none;border-radius:8px;z-index:10000;';
+            audioBtn.onclick = () => {
+                bgAudio.play();
+                audioBtn.style.display = 'none';
+            };
+            document.body.appendChild(audioBtn);
+        });
 
         // Desvanecer la pantalla de inicio revelando el video
         introScreen.style.opacity = '0';
 
         setTimeout(() => {
             introScreen.style.display = 'none';
-        }, 1000); // 1 segundo de desvanecimiento
+        }, 1000);
     }
 
     // 2. Escuchar cuando el video termina para mostrar la invitación
