@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Anette Sofía - XV Años</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Pinyon+Script&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --vg-gold: #d4af37;
+            --vg-gold-light: #f4d03f;
+            --vg-blue: #0b2545;
+            --text-light: #f8fafc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #000;
+            overflow: hidden; /* Todo se maneja por vistas/pantallas */
+        }
+
+        /* ================= 1. PANTALLA DE INICIO (PORTADA) ================= */
+        #intro-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, #02060d 0%, #0b2545 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100; /* Z-index base */
+            transition: opacity 1s ease-in-out;
+        }
+
+        .intro-logo {
+            width: 80%;
+            max-width: 320px;
+            margin-bottom: 50px;
+            filter: drop-shadow(0 0 20px rgba(0, 163, 228, 0.4));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .btn-play {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--vg-gold);
+            border: 1px solid var(--vg-gold);
+            padding: 15px 40px;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            letter-spacing: 2px;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-play:hover {
+            background: rgba(212, 175, 55, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 25px rgba(212, 175, 55, 0.4);
+        }
+
+        .btn-play svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--vg-gold);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* ================= 2. CONTENEDOR DEL VIDEO ================= */
+        #video-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 200; /* Sobre la portada */
+            background: #000;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+
+        #video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Botón para saltar video */
+        .skip-btn {
+            position: absolute;
+            top: 40px;
+            right: 20px;
+            color: rgba(255,255,255,0.7);
+            font-size: 12px;
+            letter-spacing: 1px;
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.3);
+            cursor: pointer;
+            z-index: 250;
+            text-transform: uppercase;
+        }
+
+        /* ================= 3. INVITACIÓN PRINCIPAL (MARCO DORADO) ================= */
+        #main-invitation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 300; /* Sobre el video */
+            background-image: url('src/bg.png');
+            background-size: cover;
+            background-position: center;
+            display: none;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .bg-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; min-height: 100%;
+            background: rgba(11, 25, 44, 0.7);
+            z-index: 1;
+        }
+
+        .golden-frame {
+            position: relative;
+            z-index: 2;
+            margin: 25px;
+            min-height: calc(100vh - 50px);
+            border: 2px solid var(--vg-gold);
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(11, 37, 69, 0.4) 0%, rgba(0, 0, 0, 0.6) 100%);
+            backdrop-filter: blur(3px);
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.8), 0 0 30px rgba(0,0,0,0.8);
+        }
+
+        .golden-frame::before, .golden-frame::after {
+            content: '✧';
+            position: absolute;
+            color: var(--vg-gold);
+            font-size: 24px;
+        }
+        .golden-frame::before { top: 10px; left: 15px; }
+        .golden-frame::after { bottom: 10px; right: 15px; }
+
+        .script-title {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 65px;
+            color: var(--vg-gold-light);
+            margin-bottom: -15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            line-height: 1;
+        }
+
+        .subtitle {
+            font-family: 'Cinzel', serif;
+            font-size: 28px;
+            color: var(--vg-gold);
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+        }
+
+        .intro-text {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--vg-gold-light);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0 auto 40px auto;
+            max-width: 90%;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.9);
+        }
+
+        .date-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .date-block {
+            color: var(--vg-gold);
+            text-transform: uppercase;
+        }
+
+        .date-month, .date-time {
+            font-size: 30px;
+            font-weight: bold;
+        }
+
+        .date-day {
+            font-size: 75px;
+            font-weight: bold;
+            line-height: 1;
+            padding: 0 20px;
+            border-left: 2px solid var(--vg-gold);
+            border-right: 2px solid var(--vg-gold);
+            color: var(--vg-gold-light);
+        }
+
+        /* ================= BOTONES CIRCULARES (MENÚ PRINCIPAL) ================= */
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px 15px;
+            justify-items: center;
+            margin: 0 auto 30px auto;
+            max-width: 340px;
+        }
+
+        .action-btn-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90px;
+            cursor: pointer;
+        }
+
+        .circle-btn {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f4d03f 0%, #d4af37 50%, #997a00 100%);
+            border: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.6), inset 0 0 10px rgba(255,255,255,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 12px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .circle-btn::after {
+            content: '';
+            position: absolute;
+            top: 2px; left: 2px; right: 2px; bottom: 2px;
+            border: 1px solid rgba(255,255,255,0.4);
+            border-radius: 50%;
+        }
+
+        .circle-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.6);
+        }
+
+        .circle-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: #2a1100;
+            z-index: 2;
+        }
+
+        .btn-label {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            color: var(--vg-gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            line-height: 1.4;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .hint-text {
+            font-size: 11px;
+            color: var(--vg-gold-light);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        /* ================= MODALES (PANTALLAS EMERGENTES) ================= */
+        .modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #0b2545 0%, #040811 100%);
+            border: 2px solid var(--vg-gold);
+            border-radius: 10px;
+            padding: 40px 30px;
+            width: 85%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.4s ease;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px; right: 20px;
+            color: var(--vg-gold);
+            font-size: 30px;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .modal-title {
+            font-family: 'Cinzel', serif;
+            color: var(--vg-gold-light);
+            font-size: 22px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .modal-text {
+            color: #fff;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .btn-modal {
+            display: inline-block;
+            background: var(--vg-gold);
+            color: #000;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+    </style>
+</head>
+<body>
+
+<audio id="bg-audio" loop>
+    <source src="src/bg.mp3" type="audio/mpeg">
+</audio>
+
+<div id="intro-screen">
+    <img src="src/opcion_cintia.png" alt="Anette XV" class="intro-logo">
+    <button class="btn-play" onclick="startExperience()">
+        <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        TOQUE PARA DESCUBRIR
+    </button>
+</div>
+
+<div id="video-container">
+    <button class="skip-btn" onclick="showMainInvitation()">Saltar</button>
+    <video id="intro-video" playsinline>
+        <source src="src/intro.mp4" type="video/mp4">
+    </video>
+</div>
+
+<div id="main-invitation">
+    <div class="bg-overlay"></div>
+    <div class="golden-frame">
+
+        <div class="script-title">Anette Sofía</div>
+        <div class="subtitle">XV Años</div>
+
+        <p class="intro-text">
+            El misterio acabó... y la noche estrellada está lista para nuestro gran encuentro. Viste tu mejor atuendo, coloca tu mejor sonrisa y ven a celebrar conmigo este sueño.
+        </p>
+
+        <div class="date-container">
+            <div class="date-block date-month">SEP</div>
+            <div class="date-block date-day">12</div>
+            <div class="date-block date-time">20H</div>
+        </div>
+
+        <div class="action-buttons">
+
+            <div class="action-btn-wrapper" onclick="openModal('modal-map')">
+                <div class="circle-btn">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                </div>
+                <div class="btn-label">CÓMO<br>LLEGAR</div>
+            </div>
+
+            <div class="action-btn-wrapper" onclick="window.open('https://wa.me/521234567890', '_blank')">
+                <div class="circle-btn">
+                    <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                </div>
+                <div class="btn-label">CONFIRMAR<br>PRESENCIA</div>
+            </div>
+
+            <div class="action-btn-wrapper" onclick="openModal('modal-gifts')">
+                <div class="circle-btn">
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1h-4v-2h4zM9 4c.55 0 1 .45 1 1h-4c0-.55.45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 11 8.76l1-1.36 1 1.36L15.38 12 17 10.83 14.92 8H20v6z"/></svg>
+                </div>
+                <div class="btn-label">MESA DE<br>REGALOS</div>
+            </div>
+
+            <div class="action-btn-wrapper" onclick="openModal('modal-godparents')">
+                <div class="circle-btn">
+                    <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+                </div>
+                <div class="btn-label">PADRINOS</div>
+            </div>
+
+            <div class="action-btn-wrapper" onclick="openModal('modal-dresscode')">
+                <div class="circle-btn">
+                    <svg viewBox="0 0 24 24"><path d="M21.6 11.22L13 6.06V3c0-.55-.45-1-1-1s-1 .45-1 1v3.06L2.4 11.22c-.44.26-.6.82-.36 1.27.24.42.78.6 1.22.38L12 8l8.74 4.87c.45.23.99.04 1.22-.38.24-.45.08-1.01-.36-1.27z"/></svg>
+                </div>
+                <div class="btn-label">VESTIMENTA</div>
+            </div>
+
+            <div class="action-btn-wrapper" onclick="openModal('modal-gallery')">
+                <div class="circle-btn">
+                    <svg viewBox="0 0 24 24"><path d="M21 4h-3.17L16 2H8L5.17 4H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-9 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.65 0-3 1.35-3 3s1.35 3 3 3 3-1.35 3-3-1.35-3-3-3z"/></svg>
+                </div>
+                <div class="btn-label">GALERÍA</div>
+            </div>
+
+        </div>
+
+        <div class="hint-text">TOQUE PARA INTERACTUAR</div>
+
+    </div>
+</div>
+
+
+<div id="modal-map" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal-map')">&times;</span>
+        <h3 class="modal-title">Ubicación del Evento</h3>
+        <p class="modal-text">
+            <strong>Salón "La Noche Estrellada"</strong><br><br>
+            Av. de los Pintores #123.<br>Te esperamos a las 20:00 hrs.
+        </p>
+        <a href="URL_DE_TU_GOOGLE_MAPS" target="_blank" class="btn-modal">Abrir en Google Maps</a>
+    </div>
+</div>
+
+<div id="modal-gifts" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal-gifts')">&times;</span>
+        <h3 class="modal-title">Sugerencias de Regalo</h3>
+        <p class="modal-text">
+            Tu presencia es mi mayor regalo, pero si deseas tener un detalle conmigo, mis sugerencias son:
+            <br><br>
+            ✨ Visto Talla CH<br>
+            ✨ Joyería o Maquillaje<br>
+            ✨ Efectivo en sobre
+        </p>
+        <button class="btn-modal" onclick="closeModal('modal-gifts')">Volver a la invitación</button>
+    </div>
+</div>
+
+<div id="modal-godparents" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal-godparents')">&times;</span>
+        <h3 class="modal-title">Mis Padrinos</h3>
+        <p class="modal-text">
+            Información de padrinos aquí.
+        </p>
+        <button class="btn-modal" onclick="closeModal('modal-godparents')">Cerrar</button>
+    </div>
+</div>
+
+<div id="modal-dresscode" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal-dresscode')">&times;</span>
+        <h3 class="modal-title">Código de Vestimenta</h3>
+        <p class="modal-text">
+            Información de vestimenta aquí.
+        </p>
+        <button class="btn-modal" onclick="closeModal('modal-dresscode')">Cerrar</button>
+    </div>
+</div>
+
+<div id="modal-gallery" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('modal-gallery')">&times;</span>
+        <h3 class="modal-title">Galería</h3>
+        <p class="modal-text">
+            Fotos aquí.
+        </p>
+        <button class="btn-modal" onclick="closeModal('modal-gallery')">Cerrar</button>
+    </div>
+</div>
+
+<script>
+    const introScreen = document.getElementById('intro-screen');
+    const videoContainer = document.getElementById('video-container');
+    const video = document.getElementById('intro-video');
+    const bgAudio = document.getElementById('bg-audio'); // <- AUDIO DE FONDO
+    const mainInvitation = document.getElementById('main-invitation');
+
+    // 1. Iniciar experiencia (Click en Portada)
+    function startExperience() {
+        // Mostrar el contenedor del video PRIMERO, debajo de la pantalla de inicio
+        videoContainer.style.display = 'block';
+        videoContainer.style.opacity = '1';
+
+        // Reproducir el video y el audio al mismo tiempo
+        video.play();
+        bgAudio.play();
+
+        // Desvanecer la pantalla de inicio revelando el video
+        introScreen.style.opacity = '0';
+
+        setTimeout(() => {
+            introScreen.style.display = 'none';
+        }, 1000); // 1 segundo de desvanecimiento
+    }
+
+    // 2. Escuchar cuando el video termina para mostrar la invitación
+    video.addEventListener('ended', showMainInvitation);
+
+    // 3. Mostrar la invitación principal (Marco Dorado)
+    function showMainInvitation() {
+        video.pause();
+        // Nota: NO pausamos el bgAudio, así continúa sonando en bucle.
+
+        // Mostrar la invitación principal por ENCIMA del video
+        mainInvitation.style.display = 'block';
+
+        // Forzar un reflow para que la transición de opacidad funcione
+        void mainInvitation.offsetWidth;
+
+        mainInvitation.style.opacity = '1';
+
+        // Desvanecer y ocultar el video DESPUÉS de que la invitación ya esté visible
+        setTimeout(() => {
+            videoContainer.style.opacity = '0';
+            setTimeout(() => {
+                videoContainer.style.display = 'none';
+            }, 1000);
+        }, 500);
+    }
+
+    // 4. Control de Modales
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.display = 'flex';
+        setTimeout(() => {
+            modal.style.opacity = '1';
+            modal.querySelector('.modal-content').style.transform = 'scale(1)';
+        }, 10);
+    }
+
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        modal.style.opacity = '0';
+        modal.querySelector('.modal-content').style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 400);
+    }
+</script>
+</body>
+</html>
